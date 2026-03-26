@@ -16,7 +16,7 @@ public class CourseRepository {
 
     public List<Course> getAllCourses() {
         List<Course> listCourses = new ArrayList<>();
-        String sql = "SELECT * FROM Course";
+        String sql = "SELECT * FROM course";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedstatement = connection.prepareStatement(sql);
@@ -38,6 +38,23 @@ public class CourseRepository {
         return listCourses;
     }
 
+    public List<Course> getCoursesBytitle(String title) {
+        List<Course> listCourses = new ArrayList<>();
+        String sql = "SELECT * FROM course WHERE title = ?";
+
+        try(Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+
+            preparedStatement.setString(1, title);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+        } catch (SQLException e) {
+            System.out.println("Error al crea el curso: " + e.getMessage());
+        }
+        return listCourses;
+    }
+
+
     public Course saveCourse(Course course) {
         String sql = "INSERT INTO course (title, description) VALUES (?, ?)";
         try(Connection conn = DatabaseConnection.getConnection();
@@ -52,5 +69,37 @@ public class CourseRepository {
             System.out.println("Error al crea el curso: " + e.getMessage());
         }
         return course;
+    }
+
+    public Course updateCourse(int id, Course course) {
+        String sql = "UPDATE course SET title = ?, description = ? WHERE id_Course = ?";
+
+        try(Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+
+            preparedStatement.setString(1, course.getTitle());
+            preparedStatement.setString(2, course.getDescription());
+            preparedStatement.setInt(3, id);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar el curso: " + e.getMessage());
+        }
+        return course;
+    }
+
+    public void deleteCourse(int id) {
+        String sql = "DELETE FROM course WHERE id_Course = ?";
+
+        try(Connection connection = DatabaseConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar el curso: " + e.getMessage());
+        }
     }
 }

@@ -12,14 +12,17 @@ public class UserController {
     private final UserRepository USER_REPOSITORY = new UserRepository();
 
     @PostMapping("/login")
-    public String login(@RequestBody User login){
-        User foundUSer = USER_REPOSITORY.authenticateUSer(login.getUsername(), login.getPassword());
+    public String login(@RequestBody User login) {
+        try {
+            User foundUSer = USER_REPOSITORY.authenticateUSer(login.getUsername(), login.getPassword());
 
-        if (foundUSer != null){
-            return "Logeado exitosamente! bienvenido" + foundUSer.getUsername();
-        }
-        else{
-            return "paila";
+            if (foundUSer != null) {
+                return "Logeado exitosamente! bienvenido " + foundUSer.getUsername();
+            } else {
+                return "paila, contraseña o usuario incorrecto";
+            }
+        } catch (Exception e) {
+            return "Ha surgido el siguiente error: " + e.getMessage();
         }
     }
 

@@ -11,7 +11,6 @@ import java.util.List;
 @RequestMapping("/api/courses")
 @CrossOrigin(origins = "*")
 public class CourseController {
-
     private final CourseRepository courseRepository = new CourseRepository();
 
     @GetMapping
@@ -19,8 +18,20 @@ public class CourseController {
         return courseRepository.getAllCourses();
     }
 
-    @PostMapping
-    public Course createCourse(@RequestBody Course course) {
-        return courseRepository.saveCourse(course);
+    @GetMapping("/{title}")
+    public List<Course> getCourseById(@PathVariable String title) {
+        return courseRepository.getCoursesBytitle(title);
+    }
+
+    @PutMapping("/update/{id}")
+    public String updateCourses(@PathVariable int id, @RequestBody Course updatedCourse) {
+        courseRepository.updateCourse(id, updatedCourse);
+        return "se ha actualizado el curso con exito";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteCourse(@PathVariable int id) {
+        courseRepository.deleteCourse(id);
+        return "El curso ha sido eliminado del juego.";
     }
 }
