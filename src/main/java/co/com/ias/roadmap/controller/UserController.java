@@ -27,7 +27,10 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public  String logout(){
-        return "cerrado de sesion con exito!";
+    public String logout(@RequestBody User userLogout){
+        if(userLogout.getUsername() != null){
+            return "¡Sesion cerrada exitosamente! Hasta pronto, " + userLogout.getUsername();
+        }
+        return "Cerrado de sesión con éxito.";
     }
 }

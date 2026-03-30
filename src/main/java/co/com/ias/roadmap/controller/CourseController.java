@@ -34,4 +34,10 @@ public class CourseController {
         courseRepository.deleteCourse(id);
         return "El curso ha sido eliminado del juego.";
     }
+
+    @PostMapping("/create")
+    public String createCourse(@RequestBody Course newCourse){
+        courseRepository.saveCourse(newCourse);
+        return "el curso s eha creado exitosamente";
+    }
 }

@@ -48,6 +48,17 @@ public class CourseRepository {
             preparedStatement.setString(1, title);
             ResultSet resultSet = preparedStatement.executeQuery();
 
+            while (resultSet.next()){
+                Course CourseFound = new Course();
+
+                CourseFound.setIdCourse(resultSet.getInt("id_course"));
+                CourseFound.setTitle(resultSet.getString("title"));
+                CourseFound.setDescription(resultSet.getString("description"));
+                CourseFound.setDateCreate(resultSet.getTimestamp("date_create"));
+
+                listCourses.add(CourseFound);
+            }
+
         } catch (SQLException e) {
             System.out.println("Error al crea el curso: " + e.getMessage());
         }
